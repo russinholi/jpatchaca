@@ -109,6 +109,7 @@ public class PatchacaTray implements Startable {
 
 		icon.setPopupMenu(timerMenu);
 
+		showMainScreen();
 	}
 
 	private void showNotifications() {
