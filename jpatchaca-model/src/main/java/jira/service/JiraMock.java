@@ -13,9 +13,12 @@ import jira.issue.JiraIssueData;
 
 import org.apache.commons.lang.NotImplementedException;
 
+import com.dolby.jira.net.soap.jira.RemoteWorklog;
+
 public class JiraMock implements Jira {
 
 	private Map<String, String> worklogsByKey = new HashMap<String, String>();
+	private Map<String, String> worklogsCommentsByKey = new HashMap<String, String>();
 	private boolean isIssueWorkable = true;	
 
 	@Override
@@ -27,8 +30,9 @@ public class JiraMock implements Jira {
 	}
 
 	@Override
-	public void newWorklog(String issueId, Calendar startDate, String timeSpent) {
+	public void newWorklog(String issueId, Calendar startDate, String timeSpent, String comment) {
 		worklogsByKey.put(issueId, timeSpent);
+		worklogsCommentsByKey.put(issueId, comment);
 	}
 
 	public String timeLoggedFor(String key) {
@@ -84,4 +88,12 @@ public class JiraMock implements Jira {
 		throw new NotImplementedException();
 	}
 	
+	public String commentForWorklog(String key) {
+		return worklogsCommentsByKey.get(key);
+	}
+
+	@Override
+	public List<RemoteWorklog> getWorklogs(JiraIssue issue) {
+		throw new NotImplementedException();		
+	}
 }

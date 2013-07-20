@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.dolby.jira.net.soap.jira.RemoteWorklog;
+
 import jira.exception.JiraException;
 import jira.issue.JiraAction;
 import jira.issue.JiraIssue;
@@ -25,8 +27,8 @@ public class CachedJira implements Jira{
     }
 
     @Override
-    public void newWorklog(String issueId, Calendar startDate, String timeSpent) {
-        jira.newWorklog(issueId, startDate, timeSpent);
+    public void newWorklog(String issueId, Calendar startDate, String timeSpent, String comment) {
+        jira.newWorklog(issueId, startDate, timeSpent, comment);
     }
 
     @Override
@@ -75,4 +77,9 @@ public class CachedJira implements Jira{
             isWorkableCache.put(issue, jira.isWorkable(issue));
         return isWorkableCache.get(issue);
     }
+
+	@Override
+	public List<RemoteWorklog> getWorklogs(JiraIssue issue) {
+		return jira.getWorklogs(issue);
+	}
 }

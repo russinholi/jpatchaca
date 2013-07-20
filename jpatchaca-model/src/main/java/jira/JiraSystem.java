@@ -5,7 +5,7 @@ import tasks.TaskView;
 
 public interface JiraSystem {
 
-	void addWorklog(TaskView task, Period period);
+	void addWorklog(TaskView task, Period period, String comment);
 	boolean canSendWorklogTo(TaskView task, Period period);
 
 }

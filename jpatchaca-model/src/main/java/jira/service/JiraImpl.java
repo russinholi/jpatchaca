@@ -1,6 +1,7 @@
 package jira.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -45,11 +46,12 @@ public class JiraImpl implements Jira {
 
 	@Override
 	public void newWorklog(final String issueId, final Calendar startDate,
-			final String timeSpent) {
+			final String timeSpent, final String comment) {
 
 		final RemoteWorklog workLog = new RemoteWorklog();
 		workLog.setStartDate(startDate);
 		workLog.setTimeSpent(timeSpent);
+		workLog.setComment(comment);
 
 		jiraService.addWorklogAndAutoAdjustRemainingEstimate(issueId, workLog);
 	}
@@ -199,13 +201,17 @@ public class JiraImpl implements Jira {
 	//EMERGENCIAL 28/03/2012
     private Set<String> notWorkableTypes() {
         Set<String> notWorkableTypes = new HashSet<String>();
-        notWorkableTypes.add(getIssueTypeByName("Bug").getId());
-        notWorkableTypes.add(getIssueTypeByName("OS de Suporte").getId());
-        notWorkableTypes.add(getIssueTypeByName("OS").getId());
         return notWorkableTypes;
     }
 
     private RemoteIssueType getIssueTypeByName(String string) {
         return jiraService.getIssueTypes().get(string);
     }
+
+	@Override
+	public List<RemoteWorklog> getWorklogs(JiraIssue issue) {
+		List<RemoteWorklog> worklogList = new ArrayList<RemoteWorklog>();
+		worklogList.addAll(Arrays.asList(jiraService.getWorklogs(issue.getKey())));
+		return worklogList;
+	}
 }

@@ -8,10 +8,10 @@ import jira.issue.JiraIssueData;
 import jira.mock.JiraMockInvocationHandler;
 import jira.mock.JiraServiceMockFactory;
 import jira.mock.MethodCall;
-import jira.service.TokenManager;
 import jira.service.Jira;
 import jira.service.JiraImpl;
 import jira.service.JiraServiceFacade;
+import jira.service.TokenManager;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -146,7 +146,7 @@ public class JiraTest {
 
 	@Test
 	public void testNewWorklog() {
-		jira.newWorklog("ISSUE-1", Calendar.getInstance(), "1h 30m");
+		jira.newWorklog("ISSUE-1", Calendar.getInstance(), "1h 30m", "Worklog comment");
 
 		Assert.assertEquals("login [user, password]", jiraMockHandler
 				.getMethodCall(0).toString());
@@ -157,6 +157,8 @@ public class JiraTest {
 
 		RemoteWorklog worklog = worklogCall.getArgument(RemoteWorklog.class);
 		Assert.assertEquals(worklog.getTimeSpent(), "1h 30m");
+		
+		Assert.assertEquals("Worklog comment", worklog.getComment());
 	}
 
 	@Test

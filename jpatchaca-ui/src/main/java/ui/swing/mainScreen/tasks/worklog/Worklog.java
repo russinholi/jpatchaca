@@ -5,6 +5,9 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+
+import com.dolby.jira.net.soap.jira.RemoteWorklog;
 
 import jira.JiraSystem;
 import jira.JiraWorklogOverride;
@@ -25,6 +28,7 @@ public class Worklog implements Comparable<Worklog> {
     private final Jira jira;
     private final JiraSystem jiraSystem;
     private WorklogStatusLoader statusLoader;
+	private String comment;
 
     public Worklog(final TaskView task, final Period period, final Formatter formatter,
             JiraWorklogOverride worklogOverride, TasksSystem tasksSystem, Jira jira,
@@ -36,6 +40,7 @@ public class Worklog implements Comparable<Worklog> {
         this.tasksSystem = tasksSystem;
         this.jira = jira;
         this.jiraSystem = jiraSystem;
+		this.setComment(loadComment());
         statusLoader = new WorklogStatusLoader(this, dayTasksListModel);
     }
 
@@ -80,6 +85,19 @@ public class Worklog implements Comparable<Worklog> {
         return "not sent";
     }
 
+    String loadComment() {
+        if (period.isWorklogSent()) {
+            JiraIssue jiraIssue = task.getJiraIssue().unbox();
+			List<RemoteWorklog> worklogs = jira.getWorklogs(jiraIssue);
+            for (RemoteWorklog worklog : worklogs){
+            	if (worklog.getStartDate().getTime().equals(period.startTime())) {
+            		return worklog.getComment();
+            	}
+            }
+        }
+        return null;
+    }
+
     //EMERGENCIAL 27/02/2012
     private boolean dentroDoPeriodoDeEnvio() {
         Calendar closeDate = Calendar.getInstance();
@@ -121,7 +139,7 @@ public class Worklog implements Comparable<Worklog> {
     }
 
     public void send() {
-        jiraSystem.addWorklog(task, period);
+        jiraSystem.addWorklog(task, period, getComment());
     }
 
     public void editPeriodEnd(final String value) {
@@ -154,5 +172,13 @@ public class Worklog implements Comparable<Worklog> {
     public double getMiliseconds() {
         return period.getMiliseconds();
     }
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
 
 }

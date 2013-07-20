@@ -43,6 +43,7 @@ public class WorklogStatusLoader {
         } catch (JiraNotAvailable e) {
             status = e.getMessage();
         } catch (Exception e) {
+        	e.printStackTrace();
             status = "Error loading status";
         }
         dayTasksListModel.fireChange();

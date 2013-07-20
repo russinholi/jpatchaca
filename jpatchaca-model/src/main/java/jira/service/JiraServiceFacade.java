@@ -123,6 +123,20 @@ public class JiraServiceFacade implements TokenFactory {
 		}
 	}
 
+	public RemoteWorklog[] getWorklogs(String issueKey) {
+		try {
+			return getService().getWorklogs(tokenManager.getToken(), issueKey);
+		} catch (RemoteValidationException e) {
+			throw _handleException(e);
+		} catch (RemoteAuthenticationException e) {
+			throw _handleException(e);
+		} catch (RemotePermissionException e) {
+			throw _handleException(e);
+		} catch (RemoteException e) {
+			throw _handleException(e);
+		}
+	}
+
 	public RemoteNamedObject[] getAvailableActions(String key) {
 		try {
 			return getService().getAvailableActions(tokenManager.getToken(), key);

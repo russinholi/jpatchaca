@@ -78,6 +78,10 @@ public class WorklogTableModel extends AbstractTableModel {
             item.overrideTimeSpent(value.toString());
             break;
 
+        case Comment:
+            item.setComment(value.toString());
+            break;
+
         default:
             // Nothing to do
         }

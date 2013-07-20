@@ -17,7 +17,7 @@ public class Main {
 	}
 
 	private static void keepWorkingOnMinimize() {
-		System.setProperty("sun.awt.keepWorkingSetOnMinimize", "false");
+		System.setProperty("sun.awt.keepWorkingSetOnMinimize", "true");
 	}
 
 }

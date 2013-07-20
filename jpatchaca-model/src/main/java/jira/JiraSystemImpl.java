@@ -27,14 +27,14 @@ public class JiraSystemImpl implements JiraSystem {
 	}
 
 	@Override
-	public void addWorklog(final TaskView task, final Period period) {
+	public void addWorklog(final TaskView task, final Period period, final String comment) {
 
 		Maybe<JiraIssue> jiraIssue = task.getJiraIssue();
 		if (jiraIssue == null) 
 			throw new IllegalArgumentException("Task without issue: "
 					+ task.name());
 
-		logWorkOnIssue(period, jiraIssue.unbox().getKey());
+		logWorkOnIssue(period, jiraIssue.unbox().getKey(), comment);
 		markPeriodAsSent(task, period);
 
 	}
@@ -44,14 +44,14 @@ public class JiraSystemImpl implements JiraSystem {
 		consumer.consume(new SendWorklog(tasks.idOf(task), periodIndex));
 	}
 
-	void logWorkOnIssue(final Period period, final String issueKey) {
+	void logWorkOnIssue(final Period period, final String issueKey, final String comment) {
 		final Calendar calendar = Calendar.getInstance();
 		calendar.setTime(period.startTime());
 		final String duration = worklogOverride.getDuration(period);
 
 		if (duration.equals("0h 0m"))
 			return;
-		jira.newWorklog(issueKey, calendar, duration);
+		jira.newWorklog(issueKey, calendar, duration, comment);
 	}
 	
 	@Override

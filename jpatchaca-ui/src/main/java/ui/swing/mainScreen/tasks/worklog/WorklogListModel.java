@@ -53,9 +53,11 @@ public class WorklogListModel {
     }
 
     private void createWorklogsForTask(final TaskView task) {
-        for (final Period period : task.periods())
-            if (filtraPeriodo(period))
-                lista.add(taskWorklogFactory.newTaskWorklog(task, period, this));
+        for (final Period period : task.periods()) {
+            if (filtraPeriodo(period)) {
+				lista.add(taskWorklogFactory.newTaskWorklog(task, period, this));
+            }
+        }
     }
 
     private boolean filtraPeriodo(final Period period) {

@@ -44,6 +44,13 @@ enum WorklogTableCell {
         public Object getValue(final Worklog item) {
             return item.timeToSend();
         }
+    },
+    Comment("Comment", true) {
+        @Override
+        public Object getValue(final Worklog item) {
+            return item.getComment();
+        }
+
     };
 
     private String label;

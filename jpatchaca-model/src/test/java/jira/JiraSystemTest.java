@@ -19,7 +19,7 @@ public class JiraSystemTest {
 		Period period = new Period(date(0l), date(DateUtils.MILLIS_PER_HOUR));
 		addWorklogFor(period);
 		Assert.assertEquals("1h 0m", timeLogged());
-		
+		Assert.assertEquals("Worklog comment", commentLogged());
 	}
 	
 	@Test
@@ -63,8 +63,12 @@ public class JiraSystemTest {
 		return jira.timeLoggedFor("key");
 	}
 
+	private String commentLogged() {
+		return jira.commentForWorklog("key");
+	}
+
 	private void addWorklogFor(Period period) {
-		jiraSystem.logWorkOnIssue(period, "key");
+		jiraSystem.logWorkOnIssue(period, "key", "Worklog comment");
 	}
 
 	private Date date(long millis) {

@@ -11,6 +11,8 @@ import jira.service.Jira;
 
 import org.apache.commons.lang.NotImplementedException;
 
+import com.dolby.jira.net.soap.jira.RemoteWorklog;
+
 public class MockJira implements Jira {
 
 	@Override
@@ -22,7 +24,7 @@ public class MockJira implements Jira {
 	}
 
 	@Override
-	public void newWorklog(String issueId, Calendar startDate, String timeSpent) {
+	public void newWorklog(String issueId, Calendar startDate, String timeSpent, String comment) {
 		throw new NotImplementedException();
 	}
 
@@ -69,5 +71,10 @@ public class MockJira implements Jira {
 	@Override
 	public void assignIssueTo(JiraIssue issue, String user) {
 		throw new NotImplementedException();
+	}
+
+	@Override
+	public List<RemoteWorklog> getWorklogs(JiraIssue issue) {
+		throw new NotImplementedException();		
 	}
 }
