@@ -188,7 +188,11 @@ public class JiraImpl implements Jira {
 		
 	    try{
 	        RemoteIssue remoteIssue = jiraService.getIssueByKey(jiraIssue.getKey());
-	        return !notWorkableTypes().contains(remoteIssue.getType());	        
+	        
+	        if ("SA".equals(remoteIssue.getProject())) {
+	        	return workableTypes().contains(remoteIssue.getType());
+	        }
+	        return true;
 	    }catch(MetaAttributeNotFound e){
 	        return true;
 	    }
@@ -199,11 +203,19 @@ public class JiraImpl implements Jira {
 	}
 
 	//EMERGENCIAL 28/03/2012
-    private Set<String> notWorkableTypes() {
-        Set<String> notWorkableTypes = new HashSet<String>();
-        return notWorkableTypes;
-    }
+    private Set<String> workableTypes() {
+        Set<String> workableTypes = new HashSet<String>();
+        workableTypes.add(getIssueTypeByName("Alpha Test").getId());
+        workableTypes.add(getIssueTypeByName("Architecture Support").getId());
+        workableTypes.add(getIssueTypeByName("Attendance").getId());
+        workableTypes.add(getIssueTypeByName("Development").getId());
+        workableTypes.add(getIssueTypeByName("Planning").getId());
+        workableTypes.add(getIssueTypeByName("Sub-Task").getId());
+        workableTypes.add(getIssueTypeByName("Ticket Treatment").getId());
 
+        return workableTypes;
+    }
+    
     private RemoteIssueType getIssueTypeByName(String string) {
         return jiraService.getIssueTypes().get(string);
     }
