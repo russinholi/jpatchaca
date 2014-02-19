@@ -314,7 +314,7 @@ public class JiraServiceFacade implements TokenFactory {
 			RemotePermissionException, RemoteAuthenticationException {
 		if (issueTypeMap == null) {
 			issueTypeMap = new HashMap<String, RemoteIssueType>();
-			for (RemoteIssueType type : getService().getSubTaskIssueTypes(tokenManager.getToken()))
+			for (RemoteIssueType type : getService().getIssueTypes(tokenManager.getToken()))
 				issueTypeMap.put(type.getName(), type);
 		}
 		return issueTypeMap;
